@@ -1,0 +1,130 @@
+<!-- Set this to a variable, and call it in the array in the script tag -->
+<!-- make the locations in our db into an object that we can call on in the javascript -->
+ 	<% @locations.each do |a| %>
+		<% a.title %>
+		<% a.lat %>
+		<% a.lng%>
+	<% end %>
+
+<script type="text/javascript">
+	// var l = "";
+// window.onload = function(){
+
+        // document.getElementById('show-listings').addEventListener('click', showListings);
+        // document.getElementById('hide-listings').addEventListener('click', function(){
+        //     hideMarkers(markers);
+        // });
+
+
+//       var lat = document.getElementById("location_lat");
+     
+      
+
+//       button.addEventListener('click', function(){
+//         passL(lat.value)
+      
+//       })
+// }
+
+
+
+var map;
+
+    // Create a new blank array for all the listing markers
+var markers = [];
+
+    // Create placemarkers array to use in multiple functons to have control over the number of places that show
+var placeMarkers = [];
+
+
+window.initMap = function () {
+
+	// var button = document.getElementById('button-api');
+
+	document.getElementById('show-listings').addEventListener('click', showListings);
+ //    document.getElementById('hide-listings').addEventListener('click', function(){
+ //        hideMarkers(markers);
+ //    });
+
+
+      map = new google.maps.Map(document.getElementById('map'), {
+          // center in NYC
+          center: {lat: 41.7413549, lng: -73.9980244},
+          zoom: 6,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });        
+    
+    // our variable = lat,lng
+   	// locations.our variable
+      var l = document.getElementById("lat-input")
+
+	var locations = <%= raw @test_array.to_json%>
+	console.log(locations)
+	// This function will loop through the markers array and display them all.
+	// This group uses the location array to create an array of markers on initialiation.
+  for (var i = 0; i < locations.length; i++) {
+    // get the position from the lcoation array
+    // locations array location
+    var position = locations[i]
+    // locations array title
+    // var title = locations[i].title;
+    // Creare a marker per location, and put into markers array.
+    var marker = new google.maps.Marker({
+      // map: map,
+      position: position,
+      // title: title,
+      // icon: defaultIcon,
+      animation: google.maps.Animation.DROP,
+      id: i
+    });
+    // Push the marker to our array of markers
+    markers.push(marker);
+  }       
+}
+
+function showListings() { 
+	var bounds = new google.maps.LatLngBounds();
+    console.log(bounds)
+    console.log(markers)
+    // Extend the boundaries of the map for each marker and display the marker
+	for (var i = 0; i < markers.length; i++) {
+	  markers[i].setMap(map);
+	  bounds.extend(markers[i].position);
+	}
+	map.fitBounds(bounds);
+}
+
+// This function will loop through the listings and hide them all.
+// make it generic, markers array is variable that is passed into this so we can hide arrays of markers.
+function hideMarkers(markers) {
+  for (var i = 0; i < markers.length; i++){
+    markers[i].setMap(null);
+  }
+}
+
+google.maps.event.addDomListener(window, 'load', initMap())
+
+</script>
+<br>
+<br>
+<hr>
+	<%= form_for @location do |f| %>
+	<div>Title: <%= f.text_field :title %></div>
+	<div>Latitute: <%= f.text_field :lat, :id => 'lat-input' %></div>
+	<div>Longitude: <%= f.text_field :lng, :id => 'lng-input' %></div>
+	<%= f.submit "create location", :id => 'button-api' %>
+	<% end %>
+	<hr>
+	<!-- <button id='button'>Button</button> -->
+
+<% @locations.each do |a| %>
+	<div><%= a.title %></div>
+	<div class='latitude'><%= a.lat %></div>
+	<div><%= a.lng%></div>
+<% end %>
+
+
+lat:23
+lng:33
+lat/lng:23,33
+
