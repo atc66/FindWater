@@ -6,6 +6,9 @@ git_source(:github) do |repo_name|
 end
 
 
+# 3/29 addition
+# gem "geocoder"
+
 gem 'figaro'
 gem 'paperclip'
 gem 'devise'

@@ -16,10 +16,23 @@
       <div class="options-box">
 
         <div>
-          Lat:<input id='lat-input' type='text'>
           <input id ="show-listings" type="button" value="Show Listings">
           <input id ="hide-listings" type="button" value="Hide Listings">
         </div>
+
+        <div>
+          <!-- inputs to search area. may be good for placing where water is -->
+          <input id ="zoom-to-area-text" type="text" placeholder="Enter your Favorite Area!">
+          <input id ="zoom-to-area" type="button" value="Zoom">
+        </div>
+
+        <!-- Form to pass the zoomed in on area to the DB -->
+          <%#= form_for @location do |f| %>
+            <%#= f.hidden_field :title %>
+            <%#= f.hidden_field :lat, :id => 'lat-input' %>
+            <%#= f.hidden_field :lng, :id => 'lng-input' %>
+            <%#= f.submit "Add New Location", :id => 'button-api' %>
+          <%# end %>
 
         <div id="map"></div>
         
