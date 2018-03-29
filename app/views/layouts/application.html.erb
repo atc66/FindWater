@@ -23,15 +23,15 @@
         <div>
           <!-- inputs to search area. may be good for placing where water is -->
           <input id ="zoom-to-area-text" type="text" placeholder="Enter your Favorite Area!">
-          <input id ="zoom-to-area" type="button" value="Zoom">
+          <input id ="zoom-to-area" type="button" value="Zoom" onclick="showListings()">
         </div>
 
         <!-- Form to pass the zoomed in on area to the DB -->
           <%#= form_for @location do |f| %>
-            <%#= f.hidden_field :title %>
-            <%#= f.hidden_field :lat, :id => 'lat-input' %>
-            <%#= f.hidden_field :lng, :id => 'lng-input' %>
-            <%#= f.submit "Add New Location", :id => 'button-api' %>
+            <div><%#= f.text_field :title  %></div>
+            <div><%#= f.text_field :lat, :id => 'lat-input' %></div>
+            <div><%#= f.text_field :lng, :id => 'lng-input' %></div>
+            <div><%#= f.submit "Add New Location", :id => 'button-api' %></div>
           <%# end %>
 
         <div id="map"></div>

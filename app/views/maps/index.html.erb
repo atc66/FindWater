@@ -16,6 +16,10 @@ var placeMarkers = [];
 
 var testing = [];
 
+var titles;
+var latitudes;
+var longitudes;
+
 
 window.initMap = function () {
   // var button = document.getElementById('button-api');
@@ -116,16 +120,19 @@ function zoomToArea(){
           latit: results[0].geometry.location.lat(),        
         }); 
         testing.push(lati);
+        latitudes = results[0].geometry.location.lat();
 
         var longi = new google.maps.Marker({
           longi: results[0].geometry.location.lng(), 
         });
         testing.push(longi);
+        longitudes = results[0].geometry.location.lng();
 
         var titl = new google.maps.Marker({
           titl: results[0].formatted_address, 
         });
         testing.push(titl);
+        titles = results[0].formatted_address;
         // 
         var marker = new google.maps.Marker({
           position: results[0].geometry.location,
@@ -143,10 +150,18 @@ function zoomToArea(){
   }
 }
 
-// console.log(markers)
-
+function isTitles(){
+  if (titles.length > 1) {
+    console.log(titles)
+    console.log(latitudes)
+    console.log(longitudes)
+  } else {
+    console.log("no")
+  }
+}
 
 google.maps.event.addDomListener(window, 'load', initMap())
+
 
 </script>
 
@@ -155,9 +170,9 @@ google.maps.event.addDomListener(window, 'load', initMap())
 <hr>
 
 <%= form_for @location do |f| %>
-	<div>Title: <%= f.text_field :title %></div>
-	<div>Latitute: <%= f.text_field :lat, :id => 'lat-input' %></div>
-  <div>Longitude: <%= f.text_field :lng, :id => 'lng-input' %></div>
+	<div> Title: <%= f.text_field :title %></div>
+	<div> Latitute: <%= f.text_field :lat, :id => 'lat-input' %></div>
+  <div> Longitude: <%= f.text_field :lng, :id => 'lng-input' %></div>
 	<%= f.submit "create location", :id => 'button-api' %>
 <% end %>
 
