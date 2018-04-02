@@ -20,7 +20,10 @@
       <% if logged_in? %>
         <nav class="navbar">
           <ul class="navbar_list">
+            <li class="navbar_item"><%= link_to "Home", root_path %></li>
+            <li class="navbar_item"><%= link_to "Profile", current_user %></li>
             <li class="navbar_item"><%= link_to('Find Water', maps_path) %></li>
+            <li class="navbar_item"><%= link_to 'Edit Profile',edit_user_registration_path %></li>
             <li class="navbar_item"><%= link_to('Sign Out', destroy_user_session_path, method: :delete) %>
           </ul>
       <% end %>

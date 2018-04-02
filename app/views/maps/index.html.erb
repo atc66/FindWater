@@ -1,6 +1,6 @@
 
 <hr>
-    <h3>Find where you can get water in Phildelphia</h3>
+    <h3> Find where you can get water in Phildelphia</h3>
     <div class="container">
       <div class="options-box">
         <div>
@@ -75,7 +75,8 @@ function initMap() {
   var titles;
   var latitudes;
   var longitudes;
-  // var button = document.getElementById('button-api');
+
+  var largeInfowindow = new google.maps.InfoWindow();
   // Shows the listings from out array
   document.getElementById('show-listings').addEventListener('click', showListings);
   // Hides the listings
@@ -118,8 +119,10 @@ function initMap() {
       id: i
     });
     // Push the marker to our array of markers
-    markers.push(marker);
-  }       
+    markers.push(marker); 
+  }  
+
+  
 
   function showListings() { 
     var bounds = new google.maps.LatLngBounds();

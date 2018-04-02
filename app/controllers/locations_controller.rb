@@ -3,9 +3,10 @@ class LocationsController < ApplicationController
 	def create
 		location = Location.new(location_params)
 		if location.save
-			redirect_to root_path
+			redirect_to maps_path
 		else 
-			render root_path
+			flash[:alert] = 'Sorry, please try again. That Location did not save.'
+			render maps_path
 		end
 
 	end
