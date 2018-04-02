@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Google Map Final</title>
+    <title>Find Water</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,37 +9,24 @@
   </head>
 
   <body>
+      <% if !logged_in? %>
+        <nav class="navbar">
+          <ul class="navbar_list">
+            <li class="navbar_item"><a href="/users/sign_in" >Sign In</li></a>
+            <li class="navbar_item"><a href="/users/sign_up" >Sign Up</li></a>
+          </ul>
+      <% end %>
 
-    <h3>Test</h3>
+      <% if logged_in? %>
+        <nav class="navbar">
+          <ul class="navbar_list">
+            <li class="navbar_item"><%= link_to('Find Water', maps_path) %></li>
+            <li class="navbar_item"><%= link_to('Sign Out', destroy_user_session_path, method: :delete) %>
+          </ul>
+      <% end %>
+    </nav>
 
-    <div class="container">
-      <div class="options-box">
-
-        <div>
-          <input id ="show-listings" type="button" value="Show Listings">
-          <input id ="hide-listings" type="button" value="Hide Listings">
-        </div>
-
-        <div>
-          <!-- inputs to search area. may be good for placing where water is -->
-          <input id ="zoom-to-area-text" type="text" placeholder="Enter your Favorite Area!">
-          <input id ="zoom-to-area" type="button" value="Zoom" onclick="showListings()">
-        </div>
-
-        <!-- Form to pass the zoomed in on area to the DB -->
-          <%#= form_for @location do |f| %>
-            <div><%#= f.text_field :title  %></div>
-            <div><%#= f.text_field :lat, :id => 'lat-input' %></div>
-            <div><%#= f.text_field :lng, :id => 'lng-input' %></div>
-            <div><%#= f.submit "Add New Location", :id => 'button-api' %></div>
-          <%# end %>
-
-        <div id="map"></div>
-        
-      </div>
-    </div>
-
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places,drawing,geometry&key=<%= ENV["MAP_API"] %>&v=3"></script>
+    
   	<p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     

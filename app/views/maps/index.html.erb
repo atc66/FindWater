@@ -1,29 +1,82 @@
-<!-- Set this to a variable, and call it in the array in the script tag -->
-<!-- make the locations in our db into an object that we can call on in the javascript -->
- 	<% @locations.each do |a| %>
-    <% a.title %>
-		<% a.lat %>
-		<% a.lng%>
-	<% end %>
+
+<hr>
+    <h3>Find where you can get water in Phildelphia</h3>
+    <div class="container">
+      <div class="options-box">
+        <div>
+          <input id ="show-listings" type="button" value="Free Water">
+          <input id ="hide-listings" type="button" value="I'd rather buy a bottle">
+        </div>
+        <div>
+          <!-- inputs to search area. may be good for placing where water is -->
+          <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
+          <input id ="zoom-to-area" type="button" value="Go">
+          <p id='title'></p>
+          <p>Latitude: </p>
+          <p id='latitude'></p>
+          <p>Longitude: </p><p id='longitude'></p>
+        </div>
+        <%= form_for @location do |f| %>
+          <div> Title: <%= f.text_field :title %></div>
+          <div> Latitute: <%= f.text_field :lat, :id => 'lat-input' %></div>
+          <div> Longitude: <%= f.text_field :lng, :id => 'lng-input' %></div>
+          <%= f.submit "Add to Free Water", :id => 'button-api' %>
+        <% end %>
+        <!-- Form to pass the zoomed in on area to the DB -->
+          <!-- <h3> Add this location: </h3>  -->
+          <%#= form_for @location do |f| %>
+            <!-- <div>Location: <%#= f.text_field :title  %></div> -->
+            <!-- <div>Latitude: <%#= f.text_field :lat, :id => 'lat-input', :value => "myJavaScript variable for latitur" %></div> -->
+            <!-- <div>Longitude: <%#= f.text_field :lng, :id => 'lng-input' %></div> -->
+            <!-- <div><%#= f.submit "Add New Location", :id => 'button-api' %></div> -->
+          <%# end %>
+        <div id="map"></div>
+      </div>
+    </div>
+
+<br>
+
+
+
+<!-- HTML FORM TO PASS INFO INTO DB -->
+<!--
+<form accept-charset="UTF-8" action="/locations" method="post">
+  <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input id="title" name="location[title]" type="text"></input>
+  <input id="latitude" name="location[lat]" type="text"></input>
+  <input id="longitude" name="location[lng]" type="text"></input>
+   <input name="commit" type="submit" value="Create" />
+</form>
+-->
+
+<hr>
+Our listed points in the database
+<% @locations.each do |a| %>
+  <div><%= a.title %></div>
+	<div class='latitude'><%= a.lat %></div>
+	<div><%= a.lng %></div>
+<% end %>
+
+
+<!-- The Google map API Key -->
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places,drawing,geometry&key=<%= ENV["MAP_API"] %>&v=3"></script>
 
 <script type="text/javascript">
 
-var map;
-// Create a new blank array for all the listing markers
-var markers = [];
-// Create placemarkers array to use in multiple functons to have control over the number of places that show
-var placeMarkers = [];
+  
 
-var testing = [];
-
-var titles;
-var latitudes;
-var longitudes;
-
-
-window.initMap = function () {
+function initMap() {
+  var map;
+  // Create a new blank array for all the listing markers
+  var markers = [];
+  // Create placemarkers array to use in multiple functons to have control over the number of places that show
+  var placeMarkers = [];
+  var testing = [];
+  var titles;
+  var latitudes;
+  var longitudes;
   // var button = document.getElementById('button-api');
-	// Shows the listings from out array
+  // Shows the listings from out array
   document.getElementById('show-listings').addEventListener('click', showListings);
   // Hides the listings
   document.getElementById('hide-listings').addEventListener('click', function(){
@@ -32,6 +85,7 @@ window.initMap = function () {
   // When the zoom to area button is clicked
   document.getElementById('zoom-to-area').addEventListener('click', function(){
     zoomToArea();
+    showListings();
   });
 
   map = new google.maps.Map(document.getElementById('map'), {
@@ -45,10 +99,10 @@ window.initMap = function () {
   var zoomAutocomplete = new google.maps.places.Autocomplete(
       document.getElementById('zoom-to-area-text'));     
   // "Push" our test location to the locations variable so we can cycle through them in the for loop
-	var locations = <%= raw @test_array.to_json%>
-	// console.log(locations)
-	// This function will loop through the markers array and display them all.
-	// This group uses the location array to create an array of markers on initialiation.
+  var locations = <%= raw @test_array.to_json%>
+  // console.log(locations)
+  // This function will loop through the markers array and display them all.
+  // This group uses the location array to create an array of markers on initialiation.
   for (var i = 0; i < locations.length; i++) {
     // get the position from the location array, locations array location
     var position = locations[i]
@@ -66,120 +120,94 @@ window.initMap = function () {
     // Push the marker to our array of markers
     markers.push(marker);
   }       
-}
 
-function showListings() { 
-	var bounds = new google.maps.LatLngBounds();
-    // console.log(bounds)
-    // console.log(markers)
-    // Extend the boundaries of the map for each marker and display the marker
-	for (var i = 0; i < markers.length; i++) {
-	  markers[i].setMap(map);
-	  bounds.extend(markers[i].position);
-	}
-  // includes all points in the view 
-	map.fitBounds(bounds);
-
-}
-
-// This function will loop through the listings and hide them all.
-// make it generic, markers array is variable that is passed into this so we can hide arrays of markers.
-function hideMarkers(markers) {
-  for (var i = 0; i < markers.length; i++){
-    markers[i].setMap(null);
+  function showListings() { 
+    var bounds = new google.maps.LatLngBounds();
+      // console.log(bounds)
+      // console.log(markers)
+      // Extend the boundaries of the map for each marker and display the marker
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+      bounds.extend(markers[i].position);
+    }
+    // includes all points in the view 
+    map.fitBounds(bounds);
   }
-}
 
-// This function takes the input value in the find nearby area text input locates it, and then zooms into that area. This is so that the user can show all, listings, then decide to focus on one area of the map.
-function zoomToArea(){
-  // initialize geocoder, new geocode instance
-  var geocoder = new google.maps.Geocoder();
-  // get address or place that the user entered
-  var address = document.getElementById('zoom-to-area-text').value;
-  // make sre the address isnt blank
-  if (address == '') {
-    window.alert('You must enter an area, or address.');
-  } else {
-    // Geocode the address/area entered to get the center. Then, center the map on it and zoom in
-    geocoder.geocode(
-      { address: address,
-        // location: LatLng,
-        // keep it with in the city
-        componentRestrictions: {locality: 'Philadelphia'}
-    }, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        // use resulting lat long to recenter the map
-        // console.log(results[0].geometry.location.lat())
+  // This function will loop through the listings and hide them all.
+  // make it generic, markers array is variable that is passed into this so we can hide arrays of markers.
+  function hideMarkers(markers) {
+    for (var i = 0; i < markers.length; i++){
+      markers[i].setMap(null);
+    }
+  }
 
+  // This function takes the input value in the find nearby area text input locates it, and then zooms into that area. This is so that the user can show all, listings, then decide to focus on one area of the map.
+  function zoomToArea(){
+    // initialize geocoder, new geocode instance
+    var geocoder = new google.maps.Geocoder();
+    // get address or place that the user entered
+    var address = document.getElementById('zoom-to-area-text').value;
+    // make sre the address isnt blank
+    if (address == '') {
+      window.alert('You must enter an area, or address.');
+    } else {
+      // Geocode the address/area entered to get the center. Then, center the map on it and zoom in
+      geocoder.geocode(
+        { address: address,
+          // location: LatLng,
+          // keep it with in the city
+          componentRestrictions: {locality: 'Philadelphia'}
+      }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          // use resulting lat long to recenter the map
+          // console.log(results[0].geometry.location.lat())
+          map.setCenter(results[0].geometry.location);
+          map.setZoom(15);
+          // Targeting the lat, lng, nd formatted address of the location that was zoomed in on
+          var lati = new google.maps.Marker({
+            latit: results[0].geometry.location.lat(),        
+          }); 
+          testing.push(lati);
+          latitudes = results[0].geometry.location.lat();
 
-        map.setCenter(results[0].geometry.location);
-        map.setZoom(15);
-
-        // Targeting the lat, lng, nd formatted address of the location that was zoomed in on
-        var lati = new google.maps.Marker({
-          latit: results[0].geometry.location.lat(),        
-        }); 
-        testing.push(lati);
-        latitudes = results[0].geometry.location.lat();
-
-        var longi = new google.maps.Marker({
-          longi: results[0].geometry.location.lng(), 
-        });
-        testing.push(longi);
-        longitudes = results[0].geometry.location.lng();
-
-        var titl = new google.maps.Marker({
-          titl: results[0].formatted_address, 
-        });
-        testing.push(titl);
-        titles = results[0].formatted_address;
-        // 
-        var marker = new google.maps.Marker({
-          position: results[0].geometry.location,
-          // title: title,
-          // icon: defaultIcon,
-          animation: google.maps.Animation.DROP,
-          // id: i
+          var longi = new google.maps.Marker({
+            longi: results[0].geometry.location.lng(), 
           });
-            // Push the marker to our array of markers
-        markers.push(marker);
-      } else {
-        window.alert('We could not find that location - try entering a more' + ' specific place.');
-      }
-    });
+          testing.push(longi);
+          longitudes = results[0].geometry.location.lng();
+
+          var titl = new google.maps.Marker({
+            titl: results[0].formatted_address, 
+          });
+          testing.push(titl);
+          titles = results[0].formatted_address;
+
+          // Display the latlng of the zoom search location
+          latitude.innerHTML = latitudes;
+          longitude.innerHTML = longitudes;
+
+          // 
+          var marker = new google.maps.Marker({
+            position: results[0].geometry.location,
+            // title: title,
+            // icon: defaultIcon,
+            animation: google.maps.Animation.DROP,
+            // id: i
+            });
+              // Push the marker to our array of markers
+          markers.push(marker);
+        } else {
+          window.alert('We could not find that location - try entering a more' + ' specific place.');
+        }
+      });
+    }
   }
 }
 
-function isTitles(){
-  if (titles.length > 1) {
-    console.log(titles)
-    console.log(latitudes)
-    console.log(longitudes)
-  } else {
-    console.log("no")
-  }
-}
 
 google.maps.event.addDomListener(window, 'load', initMap())
 
 
+
 </script>
-
-<br>
-<br>
-<hr>
-
-<%= form_for @location do |f| %>
-	<div> Title: <%= f.text_field :title %></div>
-	<div> Latitute: <%= f.text_field :lat, :id => 'lat-input' %></div>
-  <div> Longitude: <%= f.text_field :lng, :id => 'lng-input' %></div>
-	<%= f.submit "create location", :id => 'button-api' %>
-<% end %>
-
-<hr>
-
-<% @locations.each do |a| %>
-  <div><%= a.title %></div>
-	<div class='latitude'><%= a.lat %></div>
-	<div><%= a.lng %></div>
-<% end %>
