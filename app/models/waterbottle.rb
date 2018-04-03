@@ -1,0 +1,2 @@
+class Waterbottle < ApplicationRecord
+end

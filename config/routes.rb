@@ -8,5 +8,7 @@ Rails.application.routes.draw do
 
   resources :maps
 
+  resources :waterbottles
+
   root to: "maps#show"
 end
