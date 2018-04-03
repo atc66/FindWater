@@ -8,10 +8,9 @@ class LocationsController < ApplicationController
 			flash[:alert] = 'Sorry, please try again. That Location did not save.'
 			render maps_path
 		end
-
 	end
-
-
+	
+	
 	private
 	def location_params
     	params.require(:location).permit(:title, :lat, :lng)
