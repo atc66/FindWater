@@ -5,5 +5,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
          has_many :waterbottles
-         has_many :waterbottle_histories, :through => :waterbottle
+        
 end

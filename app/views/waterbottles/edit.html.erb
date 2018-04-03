@@ -1,0 +1,12 @@
+<h1> Refill your Bottle! </h1>
+	
+<%#= form_for @waterbottle do |f| %>
+	<p> Volume of bottle in mL </p>
+	<%#= f.text_field :refills %>
+	<%#= f.hidden_field :user_id, :value => current_user.id %></br>
+	<%#= f.hidden_field :volume, :value => current_waterbottle.volume %></br>
+	<%#= f.submit "Refill Waterbottle" %>
+<%# end %>
+
+
+<%= link_to "Recycle Water Bottle", waterbottle_path, method: :delete %>

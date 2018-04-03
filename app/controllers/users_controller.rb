@@ -2,14 +2,15 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id])
-    end
+		@waterbottle = Waterbottle.where(user_id: current_user.id)
+	end
 
-    def assign
-    	@user = User.find(params[:id])
-		@waterbottle = waterbottle.find(params[:waterbottleid])
-		@user.waterbottles << @waterbottle
-    	redirect_to "/waterbottle/#{@waterbottle.id}"
-  	end
+  #   def assign
+  #   	@user = User.find(params[:id])
+		# @waterbottle = Waterbottle.find(params[:waterbottleid])
+		# @user.waterbottles << @waterbottle
+  #   	redirect_to "/waterbottles"
+  # 	end
 
 	private
 	def waterbottle_params

@@ -37,17 +37,17 @@ class WaterbottlesController < ApplicationController
     	redirect_to "/waterbottles"
 	end
 
-	def assign
-    	@waterbottle = Waterbottle.find(params[:id])
-		@user = User.find(params[:userid])
-		@waterbottle.users << @user
-    redirect_to "/user/#{@user.id}"
-  end
+	# def assign
+ #    	@waterbottle = Waterbottle.find(params[:id])
+	# 	@user = User.find(params[:userid])
+	# 	@waterbottle.users << @user
+ #    redirect_to "/user/#{@user.id}"
+ #  end
 
 
 	private
 	def waterbottle_params
-		params.require(:waterbottle).permit(:volume, :user_id)
+		params.require(:waterbottle).permit(:volume, :user_id, :refills)
 	end	
 
 	def user_params
