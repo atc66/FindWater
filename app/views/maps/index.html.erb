@@ -13,8 +13,8 @@
           <input id ="zoom-to-area" type="button" value="Go">
           <p id='title'></p>
           <p>Latitude: </p>
-          <p id='latitude'></p>
-          <p>Longitude: </p><p id='longitude'></p>
+          <p id='latitu'></p>
+          <p>Longitude: </p><p id='longitu'></p>
         </div>
         <%= form_for @location do |f| %>
           <div> Title: <%= f.text_field :title %></div>
@@ -42,11 +42,13 @@
 
 <form accept-charset="UTF-8" action="/locations" method="post">
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
- <p>Title: </p> <input id="title" name="location[title]" type="text"></input>
- <p>Lat: </p> <input id="latitude" name="location[lat]" type="text"></input>
+  <p>Title: </p> <input id="title" name="location[title]" type="text"></input>
+  <p>Lat: </p> <input id="latitude" name="location[lat]" type="text"></input>
   <p>Lng: </p><input id="longitude" name="location[lng]" type="text"></input>
    <input name="commit" type="submit" value="Create" />
 </form>
+
+
 
 
 <hr>
@@ -173,22 +175,24 @@ function initMap() {
           }); 
           testing.push(lati);
           latitudes = results[0].geometry.location.lat();
+          document.getElementById('latitude').value = latitudes;
 
           var longi = new google.maps.Marker({
             longi: results[0].geometry.location.lng(), 
           });
           testing.push(longi);
           longitudes = results[0].geometry.location.lng();
+          document.getElementById('longitude').value = longitudes;
 
           var titl = new google.maps.Marker({
             titl: results[0].formatted_address, 
           });
           testing.push(titl);
           titles = results[0].formatted_address;
-
+          document.getElementById('title').value = document.getElementById('zoom-to-area-text').value;
           // Display the latlng of the zoom search location
-          latitude.innerHTML = latitudes;
-          longitude.innerHTML = longitudes;
+          latitu.innerHTML = latitudes;
+          longitu.innerHTML = longitudes;
 
           // 
           var marker = new google.maps.Marker({
