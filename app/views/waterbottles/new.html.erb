@@ -3,6 +3,5 @@
 <%= form_for @waterbottle do |f| %>
 	<p> Volume of bottle in mL </p>
 	<%= f.text_field :volume %>
-	<%= f.hidden_field :refill, :value => 0 %>
 	<%= f.submit "Create Waterbottle" %>
 <% end %>

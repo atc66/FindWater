@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(version: 20180403005753) do
 
   create_table "waterbottles", force: :cascade do |t|
     t.integer "volume"
-    t.integer "refill"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -39,7 +39,7 @@ class WaterbottlesController < ApplicationController
 
 	private
 	def waterbottle_params
-		params.require(:waterbottle).permit(:volume, :refill)
+		params.require(:waterbottle).permit(:volume)
 	end	
 
 	def user_params
