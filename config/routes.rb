@@ -11,4 +11,7 @@ Rails.application.routes.draw do
   resources :waterbottles
 
   root to: "maps#show"
+
+  post '/assign/waterbottle' => "waterbottles#assign"
+  post '/assign/user' => "users#assign"
 end

@@ -1,4 +1,17 @@
 <h1> waterbottle show page</h1>
 
+<h2>Assign a user to this waterbottle</h2>
+<!-- filters boats by cost and displays -->
+<% @users.each do |b| %>
+	<p> Name: <%= b.email %></p>
+	<%if logged_in? &&  @waterbottle.user_id == current_user.id %>
+		<%= form_for :user, url: {action: 'assign', controller: 'users'} do |f| %>
+        	<%= hidden_field_tag "id",  b.id %>
+            <%= hidden_field_tag "waterbottleid", @waterbottle.id %>
+        	<%= f.submit(value = "Assign") %>
+        <% end %>    
+    <% end %> 
+<% end %>
+
 
 <%= link_to "Recycle Water Bottle", waterbottle_path, method: :delete %>
