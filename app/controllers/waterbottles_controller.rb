@@ -24,7 +24,14 @@ class WaterbottlesController < ApplicationController
   	end
 
 
+  	def edit 
+  		@waterbottle = Waterbottle.find(params[:id])
+  	end
+
+
 	def update
+		#@user = User.find(params[:id])
+		#@waterbottle = Waterbottle.where(user_id: current_user.id)
 		@waterbottle = Waterbottle.find(params[:id])
     	if @waterbottle.update(waterbottle_params)
     		redirect_to @waterbottle

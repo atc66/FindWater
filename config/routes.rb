@@ -10,8 +10,6 @@ Rails.application.routes.draw do
 
   resources :waterbottles
 
-  resources :waterbottles_histories
-
   root to: "maps#show"
 
   post '/assign/waterbottle' => "waterbottles#assign"

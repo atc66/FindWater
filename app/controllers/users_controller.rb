@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
 	private
 	def waterbottle_params
-		params.require(:waterbottle).permit(:volume, :user_id)
+		params.require(:waterbottle).permit(:volume, :user_id, :refills)
 	end	
     
     def user_params
