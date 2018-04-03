@@ -1,0 +1,2 @@
+module WaterbottlesHistoriesHelper
+end
