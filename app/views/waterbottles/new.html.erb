@@ -4,7 +4,7 @@
 	<div> Volume of bottle in mL </div>
 	<div><%= f.text_field :volume %> </div>
 	<!-- <div> How many times have you filled this bottle with water? </div> -->
-	<div> <%= f.hidden_field :refills, :value => 0 %> </div>
+	<div> <%= f.hidden_field :refills, :value => 1 %> </div>
 	<%= f.hidden_field :user_id, :value => current_user.id %></br>
 	</br>
 	<%= f.submit "Create Waterbottle" %>
