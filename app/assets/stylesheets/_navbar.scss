@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+	background-color: grey;
+	overflow: hidden;
+	text-align: center;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+}
+
+li {
+	width: 18.5%;
+	display: block;
+	float: left;
+	padding: 5px 5px;
+}
+
+li a {
+	text-decoration: none;
+	color: white;
+	font-family: Arial, sans-serif;
+}
+
+li:hover {
+	background-color: blue;
+}

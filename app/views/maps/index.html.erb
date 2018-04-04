@@ -1,17 +1,21 @@
-
-<hr>
-    <h3> Find where you can get water in Phildelphia</h3>
+<div class="parallax">
+  
+</div>
+    <h3 class = "content" id="find"> Find where you can get water in Phildelphia</h3>
     <div class="container">
+      <!-- Show and hide the locations in our DB -->
       <div class="options-box">
         <div>
           <input id ="show-listings" type="button" value="Free Water">
           <input id ="hide-listings" type="button" value="I'd rather buy a bottle">
         </div>
-        <div>
+      <div>
+
           <!-- inputs to search area. may be good for placing where water is -->
           <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
           <input id ="zoom-to-area" type="button" value="Go">
         </div>
+
         <!-- HTML FORM TO PASS INFO INTO DB -->
         <p> Add a location for free water </p>
         <form accept-charset="UTF-8" action="/locations" method="post">
@@ -25,16 +29,16 @@
       </div>
     </div>
 
-<br>
-
+    <div class="parallax" id="second"></div>
+<!--
 <hr>
 Our listed points in the database
-<% @locations.each do |a| %>
-  <div><%= a.title %></div>
-	<div class='latitude'><%= a.lat %></div>
-	<div><%= a.lng %></div>
-<% end %>
-
+<%# @locations.each do |a| %>
+  <div><%#= a.title %></div>
+	<div class='latitude'><%#= a.lat %></div>
+	<div><%#= a.lng %></div>
+<%# end %>
+-->
 
 <!-- The Google map API Key -->
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places,drawing,geometry&key=<%= ENV["MAP_API"] %>&v=3"></script>
@@ -47,11 +51,12 @@ function initMap() {
   var markers = [];
   // Create placemarkers array to use in multiple functons to have control over the number of places that show
   var placeMarkers = [];
+
   var titles;
   var latitudes;
   var longitudes;
 
-  var largeInfowindow = new google.maps.InfoWindow();
+  
   // Shows the listings from out array
   document.getElementById('show-listings').addEventListener('click', showListings);
   // Hides the listings
@@ -63,7 +68,7 @@ function initMap() {
     zoomToArea();
     showListings();
   });
-
+  // Creates the loaded map that is centereed on Philadelphia
   map = new google.maps.Map(document.getElementById('map'), {
     // center in Philadelphia
     center: {lat: 39.9523789, lng: -75.1635996},
@@ -76,6 +81,9 @@ function initMap() {
       document.getElementById('zoom-to-area-text'));     
   // "Push" our test location to the locations variable so we can cycle through them in the for loop
   var locations = <%= raw @test_array.to_json%>
+
+  var largeInfowindow = new google.maps.InfoWindow();
+
   // This function will loop through the markers array and display them all.
   // This group uses the location array to create an array of markers on initialiation.
   for (var i = 0; i < locations.length; i++) {
@@ -90,7 +98,58 @@ function initMap() {
     });
     // Push the marker to our array of markers
     markers.push(marker); 
-  }  
+
+    // marker.addListener('click', function (){
+    //     populateInfoWindow(this, largeInfowindow);
+    // });
+  } 
+
+  // This function populates te infowindow when the marker is clicked. We'll only allow one infowindow which will open at the marker that is clicked and populate based on that markers position.
+  // function populateInfoWindow(marker, infowindow) {
+  //   // Check to make sure the infowindow is not already opened on this marker.
+  //   if (infowindow.marker != marker){
+  //     infowindow.marker = marker;
+  //     // clear the info window to give street view time to load
+  //     infowindow.setContent('');
+  //     infowindow.marker = marker;
+  //     // infowindow.open(map, marker);
+  //     // Make sure the marker property is cleared in the infowindow is closed.
+  //     infowindow.addListener('closeclick', function(){
+  //       infowindow.marker = null;
+  //     });
+  //     // new street views service object, panorama image closest to the marker and where to point the marker header and the pitch.
+  //     var streetViewService = new google.maps.StreetViewService();
+  //     // define radius of 50m so if the exact lat long doesnt ahve a street view we have a close enough pic
+  //     var radius = 50;
+  //     // position of street view image, then calculate the heading, then get a panorama for that and set the options
+  //     function getStreetView(data, status) {
+  //       if (status == google.maps.StreetViewStatus.OK) {
+  //         // near by streetview location to compute to compute a heading
+  //         var nearStreetViewLocation = data.location.latLng;
+  //         // google maps geometry library, loaded when we load the api 
+  //         var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
+  //           infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+  //         // in the position is the neareststreet, with a pov of heading and puth of 30 to slight look up
+  //         var panoramaOptions = {
+  //           position: nearStreetViewLocation,
+  //           pov: {
+  //             heading: heading,
+  //             pitch: 30,
+  //           }
+  //         };
+  //         // created pano object and put inside the infowindow at the div with the id of pano
+  //         var panorama = new google.maps.StreetViewPanorama(
+  //           document.getElementById('pano'), panoramaOptions);
+  //       } else {
+  //         infowindow.setContent('<div>' + marker.title + '</div>' + '<div>No Street View Found</div>');
+  //       }
+  //     }
+  //   // Use streetview service to get the closest streetview image 
+  //   streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+  //   // open wincdow of correct marker
+  //   infowindow.open(map,marker);
+  //   }
+  // }
 
   function showListings() { 
     var bounds = new google.maps.LatLngBounds();

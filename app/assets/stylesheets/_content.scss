@@ -1,0 +1,122 @@
+body, html { 
+	height: 100%;
+} 
+
+p, h1, h2, h3, i, label,{
+	font-family: Arial, sans-serif;
+
+}
+
+.parallax {
+    /* The image used */
+    background-image: url("bottle.jpg");
+
+    /* Set a specific height */
+    min-height: 500px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#second {
+	  /* The image used */
+    background-image: url("Spilled_Water_Bottle.jpg");
+
+    /* Set a specific height */
+    min-height: 500px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#third {
+	  /* The image used */
+    background-image: url("ocean.jpg");
+
+    /* Set a specific height */
+    min-height: 500px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#fourth {
+	  /* The image used */
+    background-image: url("jug.png");
+
+    /* Set a specific height */
+    min-height: 500px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#fifth {
+	  /* The image used */
+    background-image: url("dasani.jpg");
+
+    /* Set a specific height */
+    min-height: 500px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+
+.ruby-link a {
+	font-family: Arial, sans-serif;
+	text-decoration:none;
+}
+
+.ruby-link a:hover {
+	color: lightblue;
+}
+
+.wrapper {
+	background-color: black;
+	width: 100%;
+	font-size:36px;
+}
+
+.spilled {
+	max-width: 100%;
+	z-index: 0;
+}
+
+.content {
+	width: 75%;
+	border: solid black 2px;
+	margin: 0 auto;
+	background-color: grey;
+	text-align: center;
+}
+
+#find {
+	width: 100%;
+	border: none;
+}
+
+.opening {
+	text-align:center;
+	margin: 10px;
+	color: white;
+}
+
+
+
