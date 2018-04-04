@@ -4,13 +4,10 @@ body, html {
 
 p, h1, h2, h3, i, label,{
 	font-family: Arial, sans-serif;
-
 }
 
 .parallax {
-    /* The image used */
-    background-image: url("bottle.jpg");
-
+	background-image: url("bottle.jpg");
     /* Set a specific height */
     min-height: 500px; 
 
@@ -22,62 +19,20 @@ p, h1, h2, h3, i, label,{
 }
 
 #second {
-	  /* The image used */
     background-image: url("Spilled_Water_Bottle.jpg");
-
-    /* Set a specific height */
-    min-height: 500px; 
-
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 #third {
-	  /* The image used */
     background-image: url("ocean.jpg");
-
-    /* Set a specific height */
-    min-height: 500px; 
-
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 #fourth {
-	  /* The image used */
     background-image: url("jug.png");
-
-    /* Set a specific height */
-    min-height: 500px; 
-
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 #fifth {
-	  /* The image used */
     background-image: url("dasani.jpg");
-
-    /* Set a specific height */
-    min-height: 500px; 
-
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
-
-
 
 .ruby-link a {
 	font-family: Arial, sans-serif;

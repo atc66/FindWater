@@ -1,44 +1,35 @@
-<div class="parallax">
-  
-</div>
-    <h3 class = "content" id="find"> Find where you can get water in Phildelphia</h3>
-    <div class="container">
-      <!-- Show and hide the locations in our DB -->
-      <div class="options-box">
-        <div>
-          <input id ="show-listings" type="button" value="Free Water">
-          <input id ="hide-listings" type="button" value="I'd rather buy a bottle">
-        </div>
-      <div>
+<div class="parallax" id="first"></div>
 
-          <!-- inputs to search area. may be good for placing where water is -->
-          <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
-          <input id ="zoom-to-area" type="button" value="Go">
-        </div>
-
-        <!-- HTML FORM TO PASS INFO INTO DB -->
-        <p> Add a location for free water </p>
-        <form accept-charset="UTF-8" action="/locations" method="post">
-          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-           <div><input id="title" name="location[title]" type="text" placeholder="Location"></input></div>
-          <div><input id="latitude" name="location[lat]" type="text" placeholder="Latitude"></input></div>
-          <div><input id="longitude" name="location[lng]" type="text" placeholder="Longitude"></input></div>
-           <input name="commit" type="submit" value="Add to Free Water" />
-        </form>
-        <div id="map"></div>
-      </div>
+<h3 class = "content" id="find"> Find where you can get water in Phildelphia</h3>
+<div class="container">
+  <!-- Show and hide the locations in our DB -->
+  <div class="options-box">
+    <input id ="show-listings" type="button" value="Free Water">
+    <input id ="hide-listings" type="button" value="I'd rather buy a bottle">
+    
+    <div>
+      <!-- inputs to search area. may be good for placing where water is -->
+      <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
+      <input id ="zoom-to-area" type="button" value="Go">
     </div>
 
-    <div class="parallax" id="second"></div>
-<!--
-<hr>
-Our listed points in the database
-<%# @locations.each do |a| %>
-  <div><%#= a.title %></div>
-	<div class='latitude'><%#= a.lat %></div>
-	<div><%#= a.lng %></div>
-<%# end %>
--->
+    <!-- HTML FORM TO PASS INFO INTO DB -->
+    <p> Add a location for free water </p>
+    <form accept-charset="UTF-8" action="/locations" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div><input id="title" name="location[title]" type="text" placeholder="Location"></input></div>
+      <div><input id="latitude" name="location[lat]" type="text" placeholder="Latitude"></input></div>
+      <div><input id="longitude" name="location[lng]" type="text" placeholder="Longitude"></input></div>
+      <div><input id="description" name="location[description]" type="text" placeholder="Where is the water?"></input></div>
+       <input name="commit" type="submit" value="Add to Free Water" />
+    </form>
+
+    <p><%= link_to 'List of Locations', locations_path %></p>
+  </div>
+  <div id="map"></div>
+</div>
+
+<div class="parallax" id="second"></div>
 
 <!-- The Google map API Key -->
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places,drawing,geometry&key=<%= ENV["MAP_API"] %>&v=3"></script>
