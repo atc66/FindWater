@@ -11,17 +11,10 @@
     <div> Size: <%= s.volume %> mL</div>
     <div> Refilled <%= s.refills %> times </div>
     <div class="job-post"><a href="/waterbottles/<%= s.id %>/edit"> Refill </a></div>
+
+    <%= (s.refills*(0.043)).to_f %> Pounds of Plastic Saved
 <% end %>
 
-<%# @user.waterbottles.each do |q| %>
-	array = []
-	array << 4
-	<%#= array %>
-<%# end %>
-
-<%# @waterbottles.each do |a| %>
-	<!-- <div class="job-post"><a href="/waterbottles/<%#= s.id %>"><%#= s.volume %></a></div> -->
-<%# end %>
 <hr>
 
 

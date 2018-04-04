@@ -11,45 +11,21 @@
           <!-- inputs to search area. may be good for placing where water is -->
           <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
           <input id ="zoom-to-area" type="button" value="Go">
-          <p id='title'></p>
-          <p>Latitude: </p>
-          <p id='latitu'></p>
-          <p>Longitude: </p><p id='longitu'></p>
         </div>
-        <%= form_for @location do |f| %>
-          <div> Title: <%= f.text_field :title %></div>
-          <div> Latitute: <%= f.text_field :lat, :id => 'lat-input' %></div>
-          <div> Longitude: <%= f.text_field :lng, :id => 'lng-input' %></div>
-          <%= f.submit "Add to Free Water", :id => 'button-api' %>
-        <% end %>
-        <!-- Form to pass the zoomed in on area to the DB -->
-          <!-- <h3> Add this location: </h3>  -->
-          <%#= form_for @location do |f| %>
-            <!-- <div>Location: <%#= f.text_field :title  %></div> -->
-            <!-- <div>Latitude: <%#= f.text_field :lat, :id => 'lat-input', :value => "myJavaScript variable for latitur" %></div> -->
-            <!-- <div>Longitude: <%#= f.text_field :lng, :id => 'lng-input' %></div> -->
-            <!-- <div><%#= f.submit "Add New Location", :id => 'button-api' %></div> -->
-          <%# end %>
+        <!-- HTML FORM TO PASS INFO INTO DB -->
+        <p> Add a location for free water </p>
+        <form accept-charset="UTF-8" action="/locations" method="post">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+           <div><input id="title" name="location[title]" type="text" placeholder="Location"></input></div>
+          <div><input id="latitude" name="location[lat]" type="text" placeholder="Latitude"></input></div>
+          <div><input id="longitude" name="location[lng]" type="text" placeholder="Longitude"></input></div>
+           <input name="commit" type="submit" value="Add to Free Water" />
+        </form>
         <div id="map"></div>
       </div>
     </div>
 
 <br>
-
-
-
-<!-- HTML FORM TO PASS INFO INTO DB -->
-
-<form accept-charset="UTF-8" action="/locations" method="post">
-  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <p>Title: </p> <input id="title" name="location[title]" type="text"></input>
-  <p>Lat: </p> <input id="latitude" name="location[lat]" type="text"></input>
-  <p>Lng: </p><input id="longitude" name="location[lng]" type="text"></input>
-   <input name="commit" type="submit" value="Create" />
-</form>
-
-
-
 
 <hr>
 Our listed points in the database
@@ -65,15 +41,12 @@ Our listed points in the database
 
 <script type="text/javascript">
 
-  
-
 function initMap() {
   var map;
   // Create a new blank array for all the listing markers
   var markers = [];
   // Create placemarkers array to use in multiple functons to have control over the number of places that show
   var placeMarkers = [];
-  var testing = [];
   var titles;
   var latitudes;
   var longitudes;
@@ -103,20 +76,15 @@ function initMap() {
       document.getElementById('zoom-to-area-text'));     
   // "Push" our test location to the locations variable so we can cycle through them in the for loop
   var locations = <%= raw @test_array.to_json%>
-  // console.log(locations)
   // This function will loop through the markers array and display them all.
   // This group uses the location array to create an array of markers on initialiation.
   for (var i = 0; i < locations.length; i++) {
     // get the position from the location array, locations array location
     var position = locations[i]
     // locations array title
-    // var title = locations[i].title;
     // Creare a marker per location, and put into markers array.
     var marker = new google.maps.Marker({
-      // map: map,
       position: position,
-      // title: title,
-      // icon: defaultIcon,
       animation: google.maps.Animation.DROP,
       id: i
     });
@@ -124,12 +92,8 @@ function initMap() {
     markers.push(marker); 
   }  
 
-  
-
   function showListings() { 
     var bounds = new google.maps.LatLngBounds();
-      // console.log(bounds)
-      // console.log(markers)
       // Extend the boundaries of the map for each marker and display the marker
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(map);
@@ -160,47 +124,25 @@ function initMap() {
       // Geocode the address/area entered to get the center. Then, center the map on it and zoom in
       geocoder.geocode(
         { address: address,
-          // location: LatLng,
           // keep it with in the city
           componentRestrictions: {locality: 'Philadelphia'}
       }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           // use resulting lat long to recenter the map
-          // console.log(results[0].geometry.location.lat())
           map.setCenter(results[0].geometry.location);
           map.setZoom(15);
-          // Targeting the lat, lng, nd formatted address of the location that was zoomed in on
-          var lati = new google.maps.Marker({
-            latit: results[0].geometry.location.lat(),        
-          }); 
-          testing.push(lati);
+          // Targeting the lat lng of the location that was zoomed in on
           latitudes = results[0].geometry.location.lat();
           document.getElementById('latitude').value = latitudes;
 
-          var longi = new google.maps.Marker({
-            longi: results[0].geometry.location.lng(), 
-          });
-          testing.push(longi);
           longitudes = results[0].geometry.location.lng();
           document.getElementById('longitude').value = longitudes;
 
-          var titl = new google.maps.Marker({
-            titl: results[0].formatted_address, 
-          });
-          testing.push(titl);
-          titles = results[0].formatted_address;
-          document.getElementById('title').value = document.getElementById('zoom-to-area-text').value;
-          // Display the latlng of the zoom search location
-          latitu.innerHTML = latitudes;
-          longitu.innerHTML = longitudes;
+          document.getElementById('title').value = address;
 
-          // 
           var marker = new google.maps.Marker({
             position: results[0].geometry.location,
-            // title: title,
-            // icon: defaultIcon,
             animation: google.maps.Animation.DROP,
-            // id: i
             });
               // Push the marker to our array of markers
           markers.push(marker);
@@ -211,10 +153,5 @@ function initMap() {
     }
   }
 }
-
-
 google.maps.event.addDomListener(window, 'load', initMap())
-
-
-
 </script>

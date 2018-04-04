@@ -10,26 +10,30 @@
 
   <body>
       <% if !logged_in? %>
-        <nav class="navbar">
-          <ul class="navbar_list">
-            <li class="navbar_item"><a href="/users/sign_in" >Sign In</li></a>
-            <li class="navbar_item"><a href="/users/sign_up" >Sign Up</li></a>
-          </ul>
+        <nav>
+          <div class="navbar">
+            <ul class="navbar_list">
+              <li class="navbar_item"><a href="/users/sign_in" >Sign In</li></a>
+              <li class="navbar_item"><a href="/users/sign_up" >Sign Up</li></a>
+            </ul>
+          </div>
       <% end %>
 
       <% if logged_in? %>
-        <nav class="navbar">
-          <ul class="navbar_list">
-            <li class="navbar_item"><%= link_to "Home", root_path %></li>
-            <li class="navbar_item"><%= link_to "Profile", current_user %></li>
-            <li class="navbar_item"><%= link_to 'Find Water', maps_path %></li>
-            <li class="navbar_item"><%= link_to "Make A Waterbottle", new_waterbottle_path %></li>
-            <!-- <li class="navbar_item"><%#= link_to "Pick Your Waterbottle", waterbottles_path %></li> -->
-            <li class="navbar_item"><%= link_to 'Edit Profile',edit_user_registration_path %></li>
-            <li class="navbar_item"><%= link_to('Sign Out', destroy_user_session_path, method: :delete) %>
-          </ul>
+        <nav>
+          <div class="navbar">
+            <ul class="navbar_list">
+              <li class="navbar_item"><%= link_to "Home", root_path %></li>
+              <li class="navbar_item"><%= link_to "Profile", current_user %></li>
+              <li class="navbar_item"><%= link_to 'Find Water', maps_path %></li>
+              <li class="navbar_item"><%= link_to "Make A Waterbottle", new_waterbottle_path %></li>
+              <!-- <li class="navbar_item"><%#= link_to "Pick Your Waterbottle", waterbottles_path %></li> -->
+              <li class="navbar_item"><%= link_to 'Edit Profile',edit_user_registration_path %></li>
+              <li class="navbar_item"><%= link_to('Sign Out', destroy_user_session_path, method: :delete) %>
+            </ul>
+          </div> 
       <% end %>
-    </nav>
+        </nav>
 
     
   	<p class="notice"><%= notice %></p>
