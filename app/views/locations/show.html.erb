@@ -1,0 +1,11 @@
+<div class="parallax" id="first"></div>
+
+<div class="wrapper">
+	<div class="content">
+		<div class='opening'><p><%= @location.title %></p></div>	
+		<div class='opening'><p><%= @location.description %></p></div>
+		<p class='opening' id='white'><%= link_to "Remove Location", location_path, :class => "opening", :id => "blue", method: :delete %></p>
+	</div>
+</div>
+
+<div class="parallax" id="second"></div>

@@ -14,4 +14,6 @@ Rails.application.routes.draw do
 
   post '/assign/waterbottle' => "waterbottles#assign"
   post '/assign/user' => "users#assign"
+
+  
 end

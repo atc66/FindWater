@@ -1,0 +1,11 @@
+<div class="parallax" id="first"></div>
+
+<div class="wrapper">
+	<div class="content">
+		<% @locations.each do |l| %>
+			<div><a class="opening" href="/locations/<%= l.id %>"><p class="opening" id="white"><%= l.title %></p></a></div>
+		<% end %>
+	</div>
+</div>
+
+<div class="parallax" id="second"></div>

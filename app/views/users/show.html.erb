@@ -1,24 +1,28 @@
-<h1> Your Profile</h1>
+<div class="parallax"></div>
 
-<h2>Email:</h2>
-<%= @user.email %>
+<div class="wrapper">
+	<div class="content">
+		<h3>Email:</h3>
+		<p><%= @user.email %></p>
+		<br>
 
-<br>
+		<hr>
+		<p> WATERBOTTLE STATS</p>
+		<% @user.waterbottles.each do |s| %>
+		    <div><p class='opening'> Size: <%= s.volume %> mL</p></div>
+		    <div><p class='opening'> Refilled <%= s.refills %> times </p></div>
+		    <div class="ruby-link"><p><a href="/waterbottles/<%= s.id %>/edit"> Refill Your Bottle </p></a></div>
 
-<hr>
-<h3>This waterbottle belongs to <%= @user.email %></h3>
-<% @user.waterbottles.each do |s| %>
-    <div> Size: <%= s.volume %> mL</div>
-    <div> Refilled <%= s.refills %> times </div>
-    <div class="job-post"><a href="/waterbottles/<%= s.id %>/edit"> Refill </a></div>
-<% end %>
+		    <p><%= (s.refills*(((s.volume)/(500))*0.043)).to_f %> Pounds of Plastic Saved </p>
+		<% end %>
 
-<%# @waterbottles.each do |a| %>
-	<!-- <div class="job-post"><a href="/waterbottles/<%#= s.id %>"><%#= s.volume %></a></div> -->
-<%# end %>
-<hr>
+		<hr>
 
 
-<h2>Edit User:</h2>
-<%= link_to 'Edit', edit_user_registration_path(@user) %> | 	
-<%= link_to "Delete", user_registration_path, method: :delete %>
+		<h3>Edit User:</h3>
+		<div class="ruby-link"><%= link_to 'Edit', edit_user_registration_path(@user) %> | 	
+		<%= link_to "Delete", user_registration_path, method: :delete %></div>
+	</div>
+</div>
+
+<div class="parallax" id="second"></div>

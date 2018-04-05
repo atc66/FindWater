@@ -7,7 +7,7 @@ class WaterbottlesController < ApplicationController
 	def create
 		@waterbottle = Waterbottle.new(waterbottle_params)
 		if @waterbottle.save
-			redirect_to maps_path
+			redirect_to "/users/#{current_user.id}"
 		else 
 			flash[:alert] = 'Sorry, please try again. Your waterbottle did not save.'
 			render new_waterbottle_path
@@ -30,27 +30,17 @@ class WaterbottlesController < ApplicationController
 
 
 	def update
-		#@user = User.find(params[:id])
-		#@waterbottle = Waterbottle.where(user_id: current_user.id)
 		@waterbottle = Waterbottle.find(params[:id])
     	if @waterbottle.update(waterbottle_params)
-    		redirect_to @waterbottle
+    		redirect_to "/users/#{current_user.id}"
   		end
 	end
 
 	def destroy
 		@waterbottle = Waterbottle.find(params[:id])
     	@waterbottle.destroy
-    	redirect_to "/waterbottles"
+    	redirect_to "/users/#{current_user.id}"
 	end
-
-	# def assign
- #    	@waterbottle = Waterbottle.find(params[:id])
-	# 	@user = User.find(params[:userid])
-	# 	@waterbottle.users << @user
- #    redirect_to "/user/#{@user.id}"
- #  end
-
 
 	private
 	def waterbottle_params

@@ -1,0 +1,94 @@
+body, html { 
+	height: 100%;
+} 
+
+p, h1, h2, h3, i, label,{
+	font-family: Arial, sans-serif;
+}
+
+.parallax {
+	background-image: url("bottle.jpg");
+    /* Set a specific height */
+    min-height: 500px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#second {
+    background-image: url("Spilled_Water_Bottle.jpg");
+}
+
+#third {
+    background-image: url("ocean.jpg");
+}
+
+#fourth {
+    background-image: url("jug.png");
+}
+
+#fifth {
+    background-image: url("dasani.jpg");
+}
+
+.ruby-link a {
+	font-family: Arial, sans-serif;
+	text-decoration:none;
+}
+
+.ruby-link a:hover {
+	color: lightblue;
+}
+
+.wrapper {
+	background-color: black;
+	width: 100%;
+	font-size:36px;
+}
+
+.spilled {
+	max-width: 100%;
+	z-index: 0;
+}
+
+.content {
+	width: 75%;
+	border: solid black 2px;
+	margin: 0 auto;
+	background-color: grey;
+	text-align: center;
+}
+
+#find {
+	width: 100%;
+	border: none;
+}
+
+.opening {
+	text-decoration: none;
+	text-align:center;
+	margin: 10px;
+	color: white;
+	font-size: 20 px;
+}
+
+#blue {
+	color: blue;
+}
+
+#blue:hover {
+	color: lightblue;
+}
+
+#white {
+	color: white;
+}
+
+#white:hover {
+	color: lightblue;
+}
+
+

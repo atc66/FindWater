@@ -5,13 +5,6 @@ class UsersController < ApplicationController
 		@waterbottle = Waterbottle.where(user_id: current_user.id)
 	end
 
-  #   def assign
-  #   	@user = User.find(params[:id])
-		# @waterbottle = Waterbottle.find(params[:waterbottleid])
-		# @user.waterbottles << @waterbottle
-  #   	redirect_to "/waterbottles"
-  # 	end
-
 	private
 	def waterbottle_params
 		params.require(:waterbottle).permit(:volume, :user_id, :refills)

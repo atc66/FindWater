@@ -1,69 +1,62 @@
+<div class="parallax" id="first"></div>
 
-<hr>
-    <h3> Find where you can get water in Phildelphia</h3>
-    <div class="container">
-      <div class="options-box">
-        <div>
-          <input id ="show-listings" type="button" value="Free Water">
-          <input id ="hide-listings" type="button" value="I'd rather buy a bottle">
-        </div>
-        <div>
-          <!-- inputs to search area. may be good for placing where water is -->
-          <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
-          <input id ="zoom-to-area" type="button" value="Go">
-          <p id='title'></p>
-          <p>Latitude: </p>
-          <p id='latitude'></p>
-          <p>Longitude: </p><p id='longitude'></p>
-        </div>
-        <%= form_for @location do |f| %>
-          <div> Title: <%= f.text_field :title %></div>
-          <div> Latitute: <%= f.text_field :lat, :id => 'lat-input' %></div>
-          <div> Longitude: <%= f.text_field :lng, :id => 'lng-input' %></div>
-          <%= f.submit "Add to Free Water", :id => 'button-api' %>
-        <% end %>
-        <!-- Form to pass the zoomed in on area to the DB -->
-          <!-- <h3> Add this location: </h3>  -->
-          <%#= form_for @location do |f| %>
-            <!-- <div>Location: <%#= f.text_field :title  %></div> -->
-            <!-- <div>Latitude: <%#= f.text_field :lat, :id => 'lat-input', :value => "myJavaScript variable for latitur" %></div> -->
-            <!-- <div>Longitude: <%#= f.text_field :lng, :id => 'lng-input' %></div> -->
-            <!-- <div><%#= f.submit "Add New Location", :id => 'button-api' %></div> -->
-          <%# end %>
-        <div id="map"></div>
-      </div>
+<h3 class = "content" id="find">FIND WHERE YOU CAN GET WATER IN PHILADELPHIA</h3>
+<div class="container">
+  <!-- Show and hide the locations in our DB -->
+  <div class="options-box">
+    <input id ="show-listings" type="button" value="Free Water">
+    <input id ="hide-listings" type="button" value="I'd rather buy a bottle">
+    <hr>
+    <div>
+      <!-- inputs to search area. may be good for placing where water is -->
+      <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
+      <input id ="zoom-to-area" type="button" value="Go">
     </div>
+    <hr>
+    <!-- HTML FORM TO PASS INFO INTO DB -->
+    <p> ADD A LOCATION </p>
+    <form accept-charset="UTF-8" action="/locations" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div><input id="title" name="location[title]" type="text" placeholder="Location"></input></div>
+      <div><input id="latitude" name="location[lat]" type="text" placeholder="Latitude"></input></div>
+      <div><input id="longitude" name="location[lng]" type="text" placeholder="Longitude"></input></div>
+      <div><input id="description" name="location[description]" type="text" placeholder="Where is the water?"></input></div>
+       <input name="commit" type="submit" value="Add to Free Water" />
+    </form>
+    <hr>
+    <p><%= link_to 'List of Locations', locations_path, :class => "opening", :id => "blue" %></p>
+    <hr>
+      <!-- HTML TO SELECT your commute -->
+      <div>
+        <span class="text"> Within </span>
+        <select id='max-duration'>
+          <option value="10">10 min</option>
+          <option value="15">15 min</option>
+          <option value="30">30 min</option>
+          <option value="60">1 hour</option>
+        </select>
+        <select id="mode">
+          <option value="DRIVING">drive</option>
+          <option value="WALKING">walk</option>
+          <option value="BICYCLING">bike</option>
+          <option value="TRANSIT">transit ride</option>
+        </select>
+        <!-- Where you can input the address -->
+        <span class="text">of</span>
+        <input id= 'search-within-time-text' type='text' placeholder='Ex: Google Office'>
+        <input id= 'search-within-time' type='button' value='Go'>
+      </div>
+      <hr>
+  </div>
+  <div id="map"></div>
+</div>
 
-<br>
-
-
-
-<!-- HTML FORM TO PASS INFO INTO DB -->
-
-<form accept-charset="UTF-8" action="/locations" method="post">
-  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
- <p>Title: </p> <input id="title" name="location[title]" type="text"></input>
- <p>Lat: </p> <input id="latitude" name="location[lat]" type="text"></input>
-  <p>Lng: </p><input id="longitude" name="location[lng]" type="text"></input>
-   <input name="commit" type="submit" value="Create" />
-</form>
-
-
-<hr>
-Our listed points in the database
-<% @locations.each do |a| %>
-  <div><%= a.title %></div>
-	<div class='latitude'><%= a.lat %></div>
-	<div><%= a.lng %></div>
-<% end %>
-
+<div class="parallax" id="second"></div>
 
 <!-- The Google map API Key -->
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places,drawing,geometry&key=<%= ENV["MAP_API"] %>&v=3"></script>
 
 <script type="text/javascript">
-
-  
 
 function initMap() {
   var map;
@@ -71,12 +64,11 @@ function initMap() {
   var markers = [];
   // Create placemarkers array to use in multiple functons to have control over the number of places that show
   var placeMarkers = [];
-  var testing = [];
+
   var titles;
   var latitudes;
   var longitudes;
 
-  var largeInfowindow = new google.maps.InfoWindow();
   // Shows the listings from out array
   document.getElementById('show-listings').addEventListener('click', showListings);
   // Hides the listings
@@ -88,46 +80,50 @@ function initMap() {
     zoomToArea();
     showListings();
   });
+  // Event listener for our go button, Commute nearby search
+  document.getElementById('search-within-time').addEventListener('click', function(){
+    searchWithinTime();
+  });
+  // This autocomplete is for use in the search within time entry box
+    var timeAutocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('search-within-time-text'));
 
+  // Creates the loaded map that is centereed on Philadelphia
   map = new google.maps.Map(document.getElementById('map'), {
     // center in Philadelphia
     center: {lat: 39.9523789, lng: -75.1635996},
     zoom: 13,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    mapTypeControl: false
+    // mapTypeId: google.maps.MapTypeId.ROADMAP
   });   
 
   // This autocomplete is for use in the geocoder entry box
   var zoomAutocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('zoom-to-area-text'));     
+      document.getElementById('zoom-to-area-text'));    
+
   // "Push" our test location to the locations variable so we can cycle through them in the for loop
   var locations = <%= raw @test_array.to_json%>
-  // console.log(locations)
+
+  var largeInfowindow = new google.maps.InfoWindow();
+
   // This function will loop through the markers array and display them all.
   // This group uses the location array to create an array of markers on initialiation.
   for (var i = 0; i < locations.length; i++) {
     // get the position from the location array, locations array location
     var position = locations[i]
     // locations array title
-    // var title = locations[i].title;
     // Creare a marker per location, and put into markers array.
     var marker = new google.maps.Marker({
-      // map: map,
       position: position,
-      // title: title,
-      // icon: defaultIcon,
       animation: google.maps.Animation.DROP,
       id: i
     });
     // Push the marker to our array of markers
     markers.push(marker); 
-  }  
-
-  
+  } 
 
   function showListings() { 
     var bounds = new google.maps.LatLngBounds();
-      // console.log(bounds)
-      // console.log(markers)
       // Extend the boundaries of the map for each marker and display the marker
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(map);
@@ -158,45 +154,25 @@ function initMap() {
       // Geocode the address/area entered to get the center. Then, center the map on it and zoom in
       geocoder.geocode(
         { address: address,
-          // location: LatLng,
           // keep it with in the city
           componentRestrictions: {locality: 'Philadelphia'}
       }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           // use resulting lat long to recenter the map
-          // console.log(results[0].geometry.location.lat())
           map.setCenter(results[0].geometry.location);
           map.setZoom(15);
-          // Targeting the lat, lng, nd formatted address of the location that was zoomed in on
-          var lati = new google.maps.Marker({
-            latit: results[0].geometry.location.lat(),        
-          }); 
-          testing.push(lati);
+          // Targeting the lat lng of the location that was zoomed in on
           latitudes = results[0].geometry.location.lat();
+          document.getElementById('latitude').value = latitudes;
 
-          var longi = new google.maps.Marker({
-            longi: results[0].geometry.location.lng(), 
-          });
-          testing.push(longi);
           longitudes = results[0].geometry.location.lng();
+          document.getElementById('longitude').value = longitudes;
 
-          var titl = new google.maps.Marker({
-            titl: results[0].formatted_address, 
-          });
-          testing.push(titl);
-          titles = results[0].formatted_address;
+          document.getElementById('title').value = address;
 
-          // Display the latlng of the zoom search location
-          latitude.innerHTML = latitudes;
-          longitude.innerHTML = longitudes;
-
-          // 
           var marker = new google.maps.Marker({
             position: results[0].geometry.location,
-            // title: title,
-            // icon: defaultIcon,
             animation: google.maps.Animation.DROP,
-            // id: i
             });
               // Push the marker to our array of markers
           markers.push(marker);
@@ -206,11 +182,141 @@ function initMap() {
       });
     }
   }
+
+  // This function allows the user to input a desired travel time, in minutes, and a travel mdoe and a locaton - and only show the listing that within that rave time via that travel mode of the location
+  function searchWithinTime(){
+    // initialize the distance matrix service
+    var distanceMatrixService = new google.maps.DistanceMatrixService;
+    // capture the user entered address
+    var address = document.getElementById('search-within-time-text').value;
+    // Check to make sure the plac entered isn't blank
+    if (address == ''){
+      window.alert('You must enter an address.');
+    } else {
+      hideMarkers(markers);
+      // Use the ditance matrix service to calculate the fitation of the touters between all our markers, and the destination address entered by the user. Then put all the origins into an origin matrix.
+      var origins = [];
+      for (var i = 0; i < markers.length; i++) {
+        origins[i] = markers[i].position;
+      }
+      // address entered by user as destination
+      var destination = address;
+      // travel mode entered by the user
+      var mode =  document.getElementById('mode').value;
+      // Now that both the origins and destination are defined, get all the info for the distances between them.
+      distanceMatrixService.getDistanceMatrix({
+        origins: origins,
+        destinations: [destination],
+        travelMode: google.maps.TravelMode[mode],
+        unitSystem: google.maps.UnitSystem.IMPERIAL,
+      }, function(response, status) {
+        if (status !== google.maps.DistanceMatrixStatus.OK) {
+          window.alert('Error was: ' + status);
+        } else {
+          displayMarkersWithinTime(response);
+        }
+      });
+    }
+  }
+  // This function will go through each of the results and if the distance is LESS than the value in the picker, show it on the map
+  function displayMarkersWithinTime(response){
+    // user entered max travel time in mintues
+    var maxDuration = document.getElementById('max-duration').value;
+    // recapture origins and destinations
+    var origins = response.originAddresses;
+    var destinations = response.destinationAddresses;
+    // Parse through the results and get the distance and diration of each. Because there might be multiple origins and destinations we have nested loop. Then make sure at least 1 result was found.
+    var atLeastOne = false;
+    // nested loop to create one element per origina and dstination pair, 
+    for (var i = 0; i < origins.length; i++) {
+      var results = response.rows[i].elements;
+      for (var j = 0; j < results.length; j++) {
+        var element = results[j];
+        if (element.status === "OK") {
+          // distance is returned in feet but the text is in miles,
+          var distanceText = element.distance.text;
+          // duration value is given in seconds so we make it in minutes. need both the value and text.
+          var duration = element.duration.value / 60;
+          var durationText = element.duration.text;
+          if (duration <= maxDuration) {
+            // the origin [i] should = markers[i]
+            markers[i].setMap(map);
+            atLeastOne = true;
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(map);
+            // small info window that contains distance and duration
+            var infowindow = new google.maps.InfoWindow({
+              // origin is the listing address, destination is the user entered address
+              content : durationText + ' away, ' + distanceText + '<div><input type=\"button\" value=\"View Route\" onclick =' + '\"displayDirections(&quot;' + origins[i] + '&quot;);\"</input></div>'
+            });
+            infowindow.open(map, markers[i]);
+            // if user clicks on marker close the small info window to open a new
+            markers[i].infowindow = infowindow;
+            google.maps.event.addListener(markers[i], 'click', function (){
+              this.infowindow.close();
+            });
+          }
+        }
+      }
+    }
+    if(!atLeastOne) {
+      window.alert('We could not find any locations within that distance');
+    }
+    console.log("hello") 
+  } 
 }
 
+var map;
+var markers = [];
 
-google.maps.event.addDomListener(window, 'load', initMap())
+// Creates the loaded map that is centereed on Philadelphia
+map = new google.maps.Map(document.getElementById('map'), {
+  // center in Philadelphia
+  center: {lat: 39.9523789, lng: -75.1635996},
+  zoom: 13,
+  mapTypeControl: false
+  // mapTypeId: google.maps.MapTypeId.ROADMAP
+});   
 
+function hideMarkers(markers) {
+  for (var i = 0; i < markers.length; i++){
+    markers[i].setMap(null);
+  }
+}
 
+function displayDirections(origin) {
+  hideMarkers(markers);
+  var directionsService = new google.maps.DirectionsService;
+  // Get destination address from the user entered value
+  var destinationAddress = document.getElementById('search-within-time-text').value;
+  // Get the mode of travel from the user entered value
+  var mode = document.getElementById('mode').value;
+  directionsService.route({
+    // origin is the passed in markers position
+    origin: origin,
+    // the destination is user entered address
+    destination: destinationAddress,
+    travelMode: google.maps.TravelMode[mode]
+  }, function(response, status) {
+    console.log(response)
+    console.log(status)
+    if (status === google.maps.DirectionsStatus.OK) {
 
+      var directionsDisplay = new google.maps.DirectionsRenderer({
+        // display it on our map
+        map: map,
+        // get the directions from route response
+        directions: response,
+        draggable: true,
+        polylineOptions: {
+          strokeColor: 'black'
+        }
+      }, console.log(map), console.log(response));
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+  console.log("testing")
+}
+google.maps.event.addDomListener(window, initMap())
 </script>
