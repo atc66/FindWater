@@ -1,3 +1,22 @@
 // Place all the styles related to the waterbottles controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.refill {
+	width: 400px;
+	height: 25px;
+	text-align: center;
+}
+
+.refill-btn {
+	height: 25px;
+	width: 125px;
+	background-color: blue;
+	color: white;
+	border-radius: 10px 10px;
+	margin-bottom: 5px;
+}
+
+.refill-btn:hover {
+	background-color:lightblue;
+}

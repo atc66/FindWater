@@ -2,10 +2,9 @@
 
 <div class="wrapper">
 	<div class="content">
-		<h1> Location show </h1>
-		<div><%= @location.title %></div>	
-		<div><%= @location.description %></div>
-		<p><%= link_to "Remove Location", location_path, method: :delete %></p>
+		<div class='opening'><p><%= @location.title %></p></div>	
+		<div class='opening'><p><%= @location.description %></p></div>
+		<p class='opening' id='white'><%= link_to "Remove Location", location_path, :class => "opening", :id => "blue", method: :delete %></p>
 	</div>
 </div>
 

@@ -4,9 +4,17 @@
 }
 
 .navbar {
+	position: fixed;
 	background-color: grey;
 	overflow: hidden;
-	text-align: center;
+	// text-align: center;
+	width: 100%;
+
+}
+
+.logo {
+	padding: 10px 10px;
+	float:right;
 }
 
 ul {
@@ -15,10 +23,10 @@ ul {
 }
 
 li {
-	width: 18.5%;
+	// width: 18.5%;
 	display: block;
 	float: left;
-	padding: 5px 5px;
+	padding: 10px 10px;
 }
 
 li a {
@@ -30,3 +38,4 @@ li a {
 li:hover {
 	background-color: blue;
 }
+

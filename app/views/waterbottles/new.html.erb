@@ -1,16 +1,15 @@
 <div class="parallax"></div>
 <div class="wrapper">
 	<div class="content">
-		<h1> How big is your waterbottle?</h1>
-
+		<p> HOW BIG IS YOUR WATER BOTTLE?</p>
 		<%= form_for @waterbottle do |f| %>
-			<div> Volume of bottle in mL </div>
-			<div><%= f.text_field :volume %> </div>
+			<p> Volume of bottle in mL </p>
+			<div><%= f.text_field :volume, :class => "refill" %> </div>
 			<!-- <div> How many times have you filled this bottle with water? </div> -->
 			<div> <%= f.hidden_field :refills, :value => 1 %> </div>
 			<%= f.hidden_field :user_id, :value => current_user.id %></br>
 			</br>
-			<%= f.submit "Create Waterbottle" %>
+			<%= f.submit "Create Waterbottle", :class => 'refill-btn' %>
 		<% end %>
 	</div>
 </div>

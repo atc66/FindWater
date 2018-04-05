@@ -1,18 +1,16 @@
 <div class="parallax"></div>
 <div class="wrapper">
 	<div class="content">
-		<h1> Refill your Bottle! </h1>
-			
 		<%= form_for @waterbottle do |f| %>
-			<p> How many times did you refill your bottle today? </p>
-			<%= f.text_field :refills %>
+			<p> HOW MANY TIMES DID YOU REFILL YOUR BOTTLE TODAY? </p>
+			<%= f.text_field :refills, :class => "refill" %>
 			<%= f.hidden_field :user_id, :value => current_user.id %></br>
 			<%= f.hidden_field :volume, :value => @waterbottle.volume %></br>
-			<%= f.submit "Refill Waterbottle" %>
+			<%= f.submit "Refill Waterbottle", :class => 'refill-btn' %>
 		<% end %>
 
 
-		<div class="ruby-link"><%= link_to "Recycle Water Bottle", waterbottle_path, method: :delete %></div>
+		<div class="ruby-link"><%= link_to "RECYCLE YOUR BOTTLE", waterbottle_path, method: :delete %></div>
 	</div>
 </div>
 

@@ -68,10 +68,27 @@ p, h1, h2, h3, i, label,{
 }
 
 .opening {
+	text-decoration: none;
 	text-align:center;
 	margin: 10px;
 	color: white;
+	font-size: 20 px;
 }
 
+#blue {
+	color: blue;
+}
+
+#blue:hover {
+	color: lightblue;
+}
+
+#white {
+	color: white;
+}
+
+#white:hover {
+	color: lightblue;
+}
 
 
