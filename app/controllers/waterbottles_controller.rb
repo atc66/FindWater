@@ -30,8 +30,6 @@ class WaterbottlesController < ApplicationController
 
 
 	def update
-		# @user = User.current_user.id
-		#@waterbottle = Waterbottle.where(user_id: current_user.id)
 		@waterbottle = Waterbottle.find(params[:id])
     	if @waterbottle.update(waterbottle_params)
     		redirect_to "/users/#{current_user.id}"

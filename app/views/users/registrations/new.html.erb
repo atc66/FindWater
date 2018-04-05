@@ -1,10 +1,9 @@
-<div class="content">
-
-  <h2>Register</h2>
-
+<div class="parallax"></div>
+<div class="wrapper">
+  <div class="content">
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <%= devise_error_messages! %>
-
+    <h2>Register</h2>
     <div class="field">
       <%= f.label :email %><br />
       <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -26,8 +25,7 @@
     <div class="actions">
       <%= f.submit "Sign up" %>
     </div>
-</div>
   <% end %>
- 
-
 <%= render "users/shared/links" %>
+    </div>
+</div>

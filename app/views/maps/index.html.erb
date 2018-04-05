@@ -6,13 +6,13 @@
   <div class="options-box">
     <input id ="show-listings" type="button" value="Free Water">
     <input id ="hide-listings" type="button" value="I'd rather buy a bottle">
-    
+    <hr>
     <div>
       <!-- inputs to search area. may be good for placing where water is -->
       <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
       <input id ="zoom-to-area" type="button" value="Go">
     </div>
-
+    <hr>
     <!-- HTML FORM TO PASS INFO INTO DB -->
     <p> Add a location for free water </p>
     <form accept-charset="UTF-8" action="/locations" method="post">
@@ -23,8 +23,30 @@
       <div><input id="description" name="location[description]" type="text" placeholder="Where is the water?"></input></div>
        <input name="commit" type="submit" value="Add to Free Water" />
     </form>
-
+    <hr>
     <p><%= link_to 'List of Locations', locations_path %></p>
+    <hr>
+      <!-- HTML TO SELECT your commute -->
+      <div>
+        <span class="text"> Within </span>
+        <select id='max-duration'>
+          <option value="10">10 min</option>
+          <option value="15">15 min</option>
+          <option value="30">30 min</option>
+          <option value="60">1 hour</option>
+        </select>
+        <select id="mode">
+          <option value="DRIVING">drive</option>
+          <option value="WALKING">walk</option>
+          <option value="BICYCLING">bike</option>
+          <option value="TRANSIT">transit ride</option>
+        </select>
+        <!-- Where you can input the address -->
+        <span class="text">of</span>
+        <input id= 'search-within-time-text' type='text' placeholder='Ex: Google Office'>
+        <input id= 'search-within-time' type='button' value='Go'>
+      </div>
+      <hr>
   </div>
   <div id="map"></div>
 </div>
@@ -47,7 +69,6 @@ function initMap() {
   var latitudes;
   var longitudes;
 
-  
   // Shows the listings from out array
   document.getElementById('show-listings').addEventListener('click', showListings);
   // Hides the listings
@@ -59,17 +80,27 @@ function initMap() {
     zoomToArea();
     showListings();
   });
+  // Event listener for our go button, Commute nearby search
+  document.getElementById('search-within-time').addEventListener('click', function(){
+    searchWithinTime();
+  });
+  // This autocomplete is for use in the search within time entry box
+    var timeAutocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('search-within-time-text'));
+
   // Creates the loaded map that is centereed on Philadelphia
   map = new google.maps.Map(document.getElementById('map'), {
     // center in Philadelphia
     center: {lat: 39.9523789, lng: -75.1635996},
     zoom: 13,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    mapTypeControl: false
+    // mapTypeId: google.maps.MapTypeId.ROADMAP
   });   
 
   // This autocomplete is for use in the geocoder entry box
   var zoomAutocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('zoom-to-area-text'));     
+      document.getElementById('zoom-to-area-text'));    
+
   // "Push" our test location to the locations variable so we can cycle through them in the for loop
   var locations = <%= raw @test_array.to_json%>
 
@@ -89,58 +120,7 @@ function initMap() {
     });
     // Push the marker to our array of markers
     markers.push(marker); 
-
-    // marker.addListener('click', function (){
-    //     populateInfoWindow(this, largeInfowindow);
-    // });
   } 
-
-  // This function populates te infowindow when the marker is clicked. We'll only allow one infowindow which will open at the marker that is clicked and populate based on that markers position.
-  // function populateInfoWindow(marker, infowindow) {
-  //   // Check to make sure the infowindow is not already opened on this marker.
-  //   if (infowindow.marker != marker){
-  //     infowindow.marker = marker;
-  //     // clear the info window to give street view time to load
-  //     infowindow.setContent('');
-  //     infowindow.marker = marker;
-  //     // infowindow.open(map, marker);
-  //     // Make sure the marker property is cleared in the infowindow is closed.
-  //     infowindow.addListener('closeclick', function(){
-  //       infowindow.marker = null;
-  //     });
-  //     // new street views service object, panorama image closest to the marker and where to point the marker header and the pitch.
-  //     var streetViewService = new google.maps.StreetViewService();
-  //     // define radius of 50m so if the exact lat long doesnt ahve a street view we have a close enough pic
-  //     var radius = 50;
-  //     // position of street view image, then calculate the heading, then get a panorama for that and set the options
-  //     function getStreetView(data, status) {
-  //       if (status == google.maps.StreetViewStatus.OK) {
-  //         // near by streetview location to compute to compute a heading
-  //         var nearStreetViewLocation = data.location.latLng;
-  //         // google maps geometry library, loaded when we load the api 
-  //         var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
-  //           infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-  //         // in the position is the neareststreet, with a pov of heading and puth of 30 to slight look up
-  //         var panoramaOptions = {
-  //           position: nearStreetViewLocation,
-  //           pov: {
-  //             heading: heading,
-  //             pitch: 30,
-  //           }
-  //         };
-  //         // created pano object and put inside the infowindow at the div with the id of pano
-  //         var panorama = new google.maps.StreetViewPanorama(
-  //           document.getElementById('pano'), panoramaOptions);
-  //       } else {
-  //         infowindow.setContent('<div>' + marker.title + '</div>' + '<div>No Street View Found</div>');
-  //       }
-  //     }
-  //   // Use streetview service to get the closest streetview image 
-  //   streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-  //   // open wincdow of correct marker
-  //   infowindow.open(map,marker);
-  //   }
-  // }
 
   function showListings() { 
     var bounds = new google.maps.LatLngBounds();
@@ -202,6 +182,177 @@ function initMap() {
       });
     }
   }
+
+  // This function allows the user to input a desired travel time, in minutes, and a travel mdoe and a locaton - and only show the listing that within that rave time via that travel mode of the location
+  function searchWithinTime(){
+    // initialize the distance matrix service
+    var distanceMatrixService = new google.maps.DistanceMatrixService;
+    // capture the user entered address
+    var address = document.getElementById('search-within-time-text').value;
+    // Check to make sure the plac entered isn't blank
+    if (address == ''){
+      window.alert('You must enter an address.');
+    } else {
+      hideMarkers(markers);
+      // Use the ditance matrix service to calculate the fitation of the touters between all our markers, and the destination address entered by the user. Then put all the origins into an origin matrix.
+      var origins = [];
+      for (var i = 0; i < markers.length; i++) {
+        origins[i] = markers[i].position;
+      }
+      // address entered by user as destination
+      var destination = address;
+      // travel mode entered by the user
+      var mode =  document.getElementById('mode').value;
+      // Now that both the origins and destination are defined, get all the info for the distances between them.
+      distanceMatrixService.getDistanceMatrix({
+        origins: origins,
+        destinations: [destination],
+        travelMode: google.maps.TravelMode[mode],
+        unitSystem: google.maps.UnitSystem.IMPERIAL,
+      }, function(response, status) {
+        if (status !== google.maps.DistanceMatrixStatus.OK) {
+          window.alert('Error was: ' + status);
+        } else {
+          displayMarkersWithinTime(response);
+        }
+      });
+    }
+  }
+
+  // This function will go through each of the results and if the distance is LESS than the value in the picker, show it on the map
+  function displayMarkersWithinTime(response){
+    // user entered max travel time in mintues
+    var maxDuration = document.getElementById('max-duration').value;
+    // recapture origins and destinations
+    var origins = response.originAddresses;
+    var destinations = response.destinationAddresses;
+    // Parse through the results and get the distance and diration of each. Because there might be multiple origins and destinations we have nested loop. Then make sure at least 1 result was found.
+    var atLeastOne = false;
+    // nested loop to create one element per origina and dstination pair, 
+    for (var i = 0; i < origins.length; i++) {
+      var results = response.rows[i].elements;
+      for (var j = 0; j < results.length; j++) {
+        var element = results[j];
+        if (element.status === "OK") {
+          // distance is returned in feet but the text is in miles,
+          var distanceText = element.distance.text;
+          // duration value is given in seconds so we make it in minutes. need both the value and text.
+          var duration = element.duration.value / 60;
+          var durationText = element.duration.text;
+          if (duration <= maxDuration) {
+            // the origin [i] should = markers[i]
+            markers[i].setMap(map);
+            atLeastOne = true;
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(map);
+            // small info window that contains distance and duration
+            var infowindow = new google.maps.InfoWindow({
+              // origin is the listing address, destination is the user entered address
+              content : durationText + ' away, ' + distanceText + '<div><input type=\"button\" value=\"View Route\" onclick =' + '\"displayDirections(&quot;' + origins[i] + '&quot;);\"</input></div>'
+            });
+            infowindow.open(map, markers[i]);
+            // if user clicks on marker close the small info window to open a new
+            markers[i].infowindow = infowindow;
+            google.maps.event.addListener(markers[i], 'click', function (){
+              this.infowindow.close();
+            });
+          }
+        }
+      }
+    }
+    if(!atLeastOne) {
+      window.alert('We could not find any locations within that distance');
+    }
+    console.log("hello") 
+  } 
+  // function displayDirections(origin) {
+  //   hideMarkers(markers);
+  //   var directionsService = new google.maps.DirectionsService;
+  //   // Get destination address from the user entered value
+  //   var destinationAddress = document.getElementById('search-within-time-text').value;
+  //   // Get the mode of travel from the user entered value
+  //   var mode = document.getElementById('mode').value;
+  //   directionsService.route({
+  //     // origin is the passed in markers position
+  //     origin: origin,
+  //     // the destination is user entered address
+  //     destination: destinationAddress,
+  //     travelMode: google.maps.TravelMode[mode]
+  //   }, function(response, status) {
+  //     console.log(response)
+  //     console.log(status)
+  //     if (status === google.maps.DirectionsStatus.OK) {
+
+  //       var directionsDisplay = new google.maps.DirectionsRenderer({
+  //         // display it on our map
+  //         map: map,
+  //         // get the directions from route response
+  //         directions: response,
+  //         draggable: true,
+  //         polylineOptions: {
+  //           strokeColor: 'black'
+  //         }
+  //       }, console.log(map), console.log(response));
+  //     } else {
+  //       window.alert('Directions request failed due to ' + status);
+  //     }
+  //   });
+  //   console.log("testing")
+  // }
 }
+
+// var map;
+var markers = [];
+
+//   // Creates the loaded map that is centereed on Philadelphia
+map = new google.maps.Map(document.getElementById('map'), {
+  // center in Philadelphia
+  center: {lat: 39.9523789, lng: -75.1635996},
+  zoom: 13,
+  mapTypeControl: false
+  // mapTypeId: google.maps.MapTypeId.ROADMAP
+});   
+
+function hideMarkers(markers) {
+  for (var i = 0; i < markers.length; i++){
+    markers[i].setMap(null);
+  }
+}
+
+function displayDirections(origin) {
+  hideMarkers(markers);
+  var directionsService = new google.maps.DirectionsService;
+  // Get destination address from the user entered value
+  var destinationAddress = document.getElementById('search-within-time-text').value;
+  // Get the mode of travel from the user entered value
+  var mode = document.getElementById('mode').value;
+  directionsService.route({
+    // origin is the passed in markers position
+    origin: origin,
+    // the destination is user entered address
+    destination: destinationAddress,
+    travelMode: google.maps.TravelMode[mode]
+  }, function(response, status) {
+    console.log(response)
+    console.log(status)
+    if (status === google.maps.DirectionsStatus.OK) {
+
+      var directionsDisplay = new google.maps.DirectionsRenderer({
+        // display it on our map
+        map: map,
+        // get the directions from route response
+        directions: response,
+        draggable: true,
+        polylineOptions: {
+          strokeColor: 'black'
+        }
+      }, console.log(map), console.log(response));
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+  console.log("testing")
+}
+
 google.maps.event.addDomListener(window, 'load', initMap())
 </script>
