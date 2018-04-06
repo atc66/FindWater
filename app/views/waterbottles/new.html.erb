@@ -7,8 +7,7 @@
 			<div><%= f.text_field :volume, :class => "refill" %> </div>
 			<!-- <div> How many times have you filled this bottle with water? </div> -->
 			<div> <%= f.hidden_field :refills, :value => 1 %> </div>
-			<%= f.hidden_field :user_id, :value => current_user.id %></br>
-			</br>
+			<%= f.hidden_field :user_id, :value => current_user.id %>
 			<%= f.submit "Create Waterbottle", :class => 'refill-btn' %>
 		<% end %>
 	</div>

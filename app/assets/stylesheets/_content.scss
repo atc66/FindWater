@@ -55,11 +55,12 @@ p, h1, h2, h3, i, label,{
 }
 
 .content {
-	width: 75%;
+	width: 100%;
 	border: solid black 2px;
 	margin: 0 auto;
 	background-color: grey;
 	text-align: center;
+	// color: white;
 }
 
 #find {
@@ -69,10 +70,10 @@ p, h1, h2, h3, i, label,{
 
 .opening {
 	text-decoration: none;
-	text-align:center;
+	text-align: center;
 	margin: 10px;
 	color: white;
-	font-size: 20 px;
+	font-size: 18px;
 }
 
 #blue {
