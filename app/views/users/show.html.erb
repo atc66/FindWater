@@ -3,17 +3,17 @@
 <div class="wrapper">
 	<div class="content">
 		<h3>Email:</h3>
-		<p><%= @user.email %></p>
+		<p class="opening"><%= @user.email %></p>
 		<br>
 
 		<hr>
-		<p> WATERBOTTLE STATS</p>
+		<p> LIFE TIME WATERBOTTLE STATS</p>
 		<% @user.waterbottles.each do |s| %>
 		    <div><p class='opening'> Size: <%= s.volume %> mL</p></div>
 		    <div><p class='opening'> Refilled <%= s.refills %> times </p></div>
 		    <div class="ruby-link"><p><a href="/waterbottles/<%= s.id %>/edit"> Refill Your Bottle </p></a></div>
 
-		    <p><%= (s.refills*(((s.volume)/(500))*0.043)).to_f %> Pounds of Plastic Saved </p>
+		    <p><%= (s.refills*(((s.volume)/(500))*0.04)).to_f %> Pounds of Plastic Saved </p>
 		<% end %>
 
 		<hr>
