@@ -7,7 +7,7 @@ p, h1, h2, h3, i, label,{
 }
 
 .parallax {
-	background-image: url('bottle.jpg');
+	background-image: image-url('bottle.jpg');
     /* Set a specific height */
     min-height: 500px; 
 
@@ -19,19 +19,19 @@ p, h1, h2, h3, i, label,{
 }
 
 #second {
-    background-image: url("Spilled_Water_Bottle.jpg");
+    background-image: image-url("Spilled_Water_Bottle.jpg");
 }
 
 #third {
-    background-image: url("ocean.jpg");
+    background-image: image-url("ocean.jpg");
 }
 
 #fourth {
-    background-image: url("jug.png");
+    background-image: image-url("jug.png");
 }
 
 #fifth {
-    background-image: url("dasani.jpg");
+    background-image: image-url("dasani.jpg");
 }
 
 .ruby-link a {
