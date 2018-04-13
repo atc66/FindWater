@@ -4,31 +4,13 @@
 <div class="container">
   <!-- Show and hide the locations in our DB -->
   <div class="options-box">
-    <input id ="show-listings" type="button" value="Free Water">
-    <input id ="hide-listings" type="button" value="I'd rather buy a bottle">
+    <input id ="show-listings" type="button" value="Show All Free Water Locations">
+    <input id ="hide-listings" type="button" value="Start Search Over">
     <hr>
-    <div>
-      <!-- inputs to search area. may be good for placing where water is -->
-      <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
-      <input id ="zoom-to-area" type="button" value="Go">
-    </div>
-    <hr>
-    <!-- HTML FORM TO PASS INFO INTO DB -->
-    <p> ADD A LOCATION </p>
-    <form accept-charset="UTF-8" action="/locations" method="post">
-      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      <div><input id="title" name="location[title]" type="text" placeholder="Location"></input></div>
-      <div><input id="latitude" name="location[lat]" type="text" placeholder="Latitude"></input></div>
-      <div><input id="longitude" name="location[lng]" type="text" placeholder="Longitude"></input></div>
-      <div><input id="description" name="location[description]" type="text" placeholder="Where is the water?"></input></div>
-       <input name="commit" type="submit" value="Add to Free Water" />
-    </form>
-    <hr>
-    <p><%= link_to 'List of Locations', locations_path, :class => "opening", :id => "blue" %></p>
-    <hr>
-      <!-- HTML TO SELECT your commute -->
+        <!-- HTML TO SELECT your commute -->
       <div>
-        <span class="text"> Within </span>
+         <p> Find a Location within </p> 
+        <span class="text">  </span>
         <select id='max-duration'>
           <option value="10">10 min</option>
           <option value="15">15 min</option>
@@ -47,6 +29,24 @@
         <input id= 'search-within-time' type='button' value='Go'>
       </div>
     <hr>
+    <div>
+      <!-- inputs to search area. may be good for placing where water is -->
+      <p> Add a Location </p> 
+      <input id ="zoom-to-area-text" type="text" placeholder="You can get free water here!">
+      <input id ="zoom-to-area" type="button" value="Go">
+    </div>
+    <!-- HTML FORM TO PASS INFO INTO DB -->
+    <form accept-charset="UTF-8" action="/locations" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div><input id="title" name="location[title]" type="hidden" placeholder="Location"></input></div>
+      <div><input id="latitude" name="location[lat]" type="hidden" placeholder="Latitude"></input></div>
+      <div><input id="longitude" name="location[lng]" type="hidden" placeholder="Longitude"></input></div>
+      <div><input id="description" name="location[description]" type="text" placeholder="How do you get the water?"></input></div>
+       <input name="commit" type="submit" value="Add to Free Water" />
+    </form>
+    <hr>
+  
+    <p><%= link_to 'List of Locations', locations_path, :class => "opening", :id => "blue" %></p>
   </div>
   <div id="map"></div>
 </div>
