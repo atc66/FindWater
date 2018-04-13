@@ -5,6 +5,8 @@
 		<h3>Email:</h3>
 		<p class="opening"><%= @user.email %></p>
 		<hr>
+		<p class="ruby-link"><%= link_to "MAKE NEW BOTTLE", new_waterbottle_path %></p>
+		<hr>
 		<p> LIFE TIME WATERBOTTLE STATS</p>
 		<% @user.waterbottles.each do |s| %>
 		    <div><p class='opening'> Size: <%= s.volume %> mL</p></div>
@@ -15,8 +17,6 @@
 		<% end %>
 
 		<hr>
-
-
 		<h3>Edit User:</h3>
 		<div class="ruby-link"><%= link_to 'Edit', edit_user_registration_path(@user) %> | 	
 		<%= link_to "Delete", user_registration_path, method: :delete %></div>
