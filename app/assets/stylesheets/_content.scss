@@ -66,6 +66,7 @@ p, h1, h2, h3, i, label,{
 #find {
 	width: 100%;
 	border: none;
+	color: white;
 }
 
 .opening {
@@ -90,6 +91,10 @@ p, h1, h2, h3, i, label,{
 
 #white:hover {
 	color: lightblue;
+}
+
+#of {
+	font-size: 8px;
 }
 
 
